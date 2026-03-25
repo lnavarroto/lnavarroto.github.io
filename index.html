@@ -1,16 +1,194 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Portafolio | Luis Navarro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de Luis Navarro - Full Stack Developer">
+    <title>Luis Navarro | Full Stack Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">LN</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre-mi">Sobre mí</a></li>
+                <li><a href="#tecnologias">Tecnologías</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#experiencia">Experiencia</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<body style="font-family:Arial;background:#0F172A;color:white;text-align:center;padding:100px">
+    <!-- SECCIÓN HERO -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Luis Navarro</h1>
+                <p class="hero-subtitle">Full Stack Developer</p>
+                <p class="hero-description">Creo soluciones web modernas con tecnologías actuales</p>
+                <div class="hero-buttons">
+                    <a href="#proyectos" class="btn btn-primary">Ver Proyectos</a>
+                    <a href="#contacto" class="btn btn-secondary">Contactarme</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h1>Hola, soy Luis Navarro</h1>
-<p>Desarrollador Web</p>
+    <!-- SECCIÓN SOBRE MÍ -->
+    <section id="sobre-mi" class="section about">
+        <div class="container">
+            <h2>Sobre mí</h2>
+            <div class="about-content">
+                <p>Desarrollador enfocado en aplicaciones web, sistemas administrativos y bases de datos. Especializado en crear soluciones escalables y funcionales que resuelvan problemas reales.</p>
+            </div>
+        </div>
+    </section>
 
-<p>Mi portafolio estará disponible pronto.</p>
+    <!-- SECCIÓN TECNOLOGÍAS -->
+    <section id="tecnologias" class="section technologies">
+        <div class="container">
+            <h2>Tecnologías</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="tech-icon">⚡</span>
+                    <span>JavaScript</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🎨</span>
+                    <span>HTML & CSS</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">⚛️</span>
+                    <span>React</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🔧</span>
+                    <span>Node.js</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📄</span>
+                    <span>Supabase</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🐘</span>
+                    <span>PostgreSQL</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📦</span>
+                    <span>Git</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📱</span>
+                    <span>Responsive Design</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- SECCIÓN PROYECTOS -->
+    <section id="proyectos" class="section projects">
+        <div class="container">
+            <h2>Proyectos</h2>
+            <div class="projects-grid">
+                <!-- Proyecto 1 -->
+                <div class="project-card">
+                    <div class="project-image">📊</div>
+                    <h3>Sistema de Mesa de Partes</h3>
+                    <p class="project-description">Gestión de tickets y roles con interfaz intuitiva</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Supabase</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" target="_blank" class="link-btn">GitHub</a>
+                        <a href="#" target="_blank" class="link-btn">Demo</a>
+                    </div>
+                </div>
+
+                <!-- Proyecto 2 -->
+                <div class="project-card">
+                    <div class="project-image">💼</div>
+                    <h3>Panel Administrativo</h3>
+                    <p class="project-description">Dashboard con visualización de datos y reportes</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">API REST</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" target="_blank" class="link-btn">GitHub</a>
+                        <a href="#" target="_blank" class="link-btn">Demo</a>
+                    </div>
+                </div>
+
+                <!-- Proyecto 3 -->
+                <div class="project-card">
+                    <div class="project-image">🛒</div>
+                    <h3>E-Commerce</h3>
+                    <p class="project-description">Tienda online con carrito y gestión de inventario</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" target="_blank" class="link-btn">GitHub</a>
+                        <a href="#" target="_blank" class="link-btn">Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN EXPERIENCIA -->
+    <section id="experiencia" class="section experience">
+        <div class="container">
+            <h2>Experiencia</h2>
+            <div class="experience-list">
+                <div class="experience-item">
+                    <h3>Desarrollo de sistemas web</h3>
+                    <p>Creación de aplicaciones web escalables y responsivas</p>
+                </div>
+                <div class="experience-item">
+                    <h3>Integración con Supabase</h3>
+                    <p>Implementación de bases de datos y autenticación en tiempo real</p>
+                </div>
+                <div class="experience-item">
+                    <h3>Gestión de roles y permisos</h3>
+                    <p>Desarrollo de sistemas complejos de autenticación y autorizacion</p>
+                </div>
+                <div class="experience-item">
+                    <h3>APIs REST</h3>
+                    <p>Diseño e implementación de APIs escalables</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN CONTACTO -->
+    <section id="contacto" class="section contact">
+        <div class="container">
+            <h2>Contacto</h2>
+            <div class="social-links">
+                <a href="https://github.com" target="_blank" class="social-link">GitHub</a>
+                <a href="https://linkedin.com" target="_blank" class="social-link">LinkedIn</a>
+                <a href="mailto:tu@email.com" class="social-link">Email</a>
+                <a href="https://telegram.me" target="_blank" class="social-link">Telegram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Luis Navarro. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- LIBRERÍAS -->
+    <script src="js/script.js"></script>
 </body>
 </html>
