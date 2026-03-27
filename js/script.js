@@ -1,22 +1,48 @@
+const navbar = document.querySelector('.navbar');
+const navLinks = document.querySelectorAll('.nav-links a');
+const pageSections = document.querySelectorAll('section[id]');
+
 // ==================== SMOOTH SCROLL NAVIGATION ====================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (event) {
+        const targetSelector = this.getAttribute('href');
+        const target = document.querySelector(targetSelector);
+
+        if (!target) {
+            return;
         }
+
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
 
 // ==================== NAVBAR EFFECT ON SCROLL ====================
-window.addEventListener('scroll', function () {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-    } else {
-        navbar.style.boxShadow = 'none';
-    }
+function updateNavbarState() {
+    navbar.classList.toggle('scrolled', window.scrollY > 24);
+}
+
+// ==================== ACTIVE SECTION LINK ====================
+function updateActiveLink() {
+    const currentPosition = window.scrollY + 140;
+
+    pageSections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (currentPosition >= sectionTop && currentPosition < sectionTop + sectionHeight) {
+            navLinks.forEach((link) => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', () => {
+    updateNavbarState();
+    updateActiveLink();
 });
 
-console.log('✅ Portafolio cargado - Animaciones de hover activadas');
+updateNavbarState();
+updateActiveLink();

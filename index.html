@@ -13,7 +13,7 @@
     <!-- NAVEGACIÓN -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">LN</div>
+            <a href="#inicio" class="logo">LN</a>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#sobre-mi">Sobre mí</a></li>
@@ -22,6 +22,7 @@
                 <li><a href="#experiencia">Experiencia</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
+            <a href="#contacto" class="nav-cta">Hablemos</a>
         </div>
     </nav>
 
@@ -37,12 +38,32 @@
                 </div>
 
                 <div class="hero-content">
+                    <p class="hero-eyebrow">Ingeniería de sistemas orientada a producto, rendimiento y automatización</p>
                     <h1>Luis Navarro | Systems Engineer & Full Stack Developer</h1>
-                    <p class="hero-description">Diseño soluciones robustas para web, escritorio y automatización, con foco en rendimiento, arquitectura limpia y bases de datos eficientes.</p>
+                    <p class="hero-description">Construyo aplicaciones web y de escritorio con foco en arquitectura limpia, APIs mantenibles, consultas rápidas y automatización de procesos que realmente reducen tiempos operativos.</p>
+                    <div class="hero-highlights">
+                        <span class="hero-pill">Node.js, React, Python y Electron</span>
+                        <span class="hero-pill">Optimización SQL y diseño de APIs</span>
+                        <span class="hero-pill">Automatización de procesos administrativos</span>
+                    </div>
                     <div class="hero-buttons">
                         <a href="#proyectos" class="btn btn-primary">Ver Proyectos</a>
                         <a href="cv.pdf" download class="btn btn-tertiary" title="Descargar CV en PDF">Descargar CV</a>
                         <a href="#contacto" class="btn btn-secondary">Contactarme</a>
+                    </div>
+                    <div class="hero-metrics">
+                        <div class="hero-metric">
+                            <strong>-78%</strong>
+                            <span>latencia en consultas críticas</span>
+                        </div>
+                        <div class="hero-metric">
+                            <strong>48h a min</strong>
+                            <span>en tiempos de respuesta operativa</span>
+                        </div>
+                        <div class="hero-metric">
+                            <strong>10K req/min</strong>
+                            <span>capacidad en escenarios de alta demanda</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,7 +75,14 @@
         <div class="container">
             <h2>Sobre mí</h2>
             <div class="about-content">
-                <p>Desarrollador enfocado en aplicaciones web, sistemas administrativos y bases de datos. Especializado en crear soluciones escalables y funcionales que resuelvan problemas reales.</p>
+                <p>Soy ingeniero de sistemas con enfoque en desarrollo full stack y mejora de procesos. Me especializo en traducir necesidades operativas en software estable, medible y fácil de mantener.</p>
+                <p>Trabajo especialmente bien en sistemas administrativos, paneles internos, automatización, integraciones con bases de datos y productos que necesitan orden técnico, rendimiento y evolución constante.</p>
+                <div class="about-points">
+                    <span class="about-point">Arquitectura full stack orientada a escalabilidad</span>
+                    <span class="about-point">Automatización para reducir carga manual</span>
+                    <span class="about-point">Diseño de APIs y módulos mantenibles</span>
+                    <span class="about-point">Optimización de consultas y flujos críticos</span>
+                </div>
             </div>
         </div>
     </section>
@@ -171,18 +199,20 @@
             <div class="projects-grid">
                 <!-- Proyecto 1 -->
                 <div class="project-card">
+                    <span class="project-kicker">Sistema interno</span>
                     <div class="project-image">📊</div>
                     <h3>Sistema de Mesa de Partes</h3>
                     <div class="project-challenge">
-                        <strong>Reto:</strong> Gestión manual causaba retrasos de 48h en respuesta
+                        <strong>Reto:</strong> La operación dependía de registro manual y generaba retrasos de hasta 48 horas en seguimiento y respuesta.
                     </div>
                     <div class="project-solution">
-                        <strong>Solución:</strong> Implementé automatización con Supabase reduciendo tiempo de respuesta a minutos
+                        <strong>Solución:</strong> Diseñé un flujo centralizado con automatización, trazabilidad por estado y persistencia en Supabase para acelerar atención y control.
                     </div>
                     <div class="project-metrics">
                         <span class="metric">⏱️ -95% tiempo respuesta</span>
                         <span class="metric">📈 +300% productividad</span>
                     </div>
+                    <p class="project-summary">Resultado: un sistema más confiable para equipos administrativos, con menos fricción operativa y mejor visibilidad de cada trámite.</p>
                     <div class="project-tech">
                         <span class="tech-tag">JavaScript</span>
                         <span class="tech-tag">Supabase</span>
@@ -196,18 +226,20 @@
 
                 <!-- Proyecto 2 -->
                 <div class="project-card">
+                    <span class="project-kicker">Analytics & performance</span>
                     <div class="project-image">💼</div>
                     <h3>Panel Administrativo avanzado</h3>
                     <div class="project-challenge">
-                        <strong>Reto:</strong> Dashboard con consultas lentas generaba lag en reports en vivo
+                        <strong>Reto:</strong> El dashboard sufría demoras en consultas y afectaba la lectura de reportes en tiempo real para la toma de decisiones.
                     </div>
                     <div class="project-solution">
-                        <strong>Solución:</strong> Optimicé índices SQL y implementé caché, logrando consultas instantáneas
+                        <strong>Solución:</strong> Reorganicé consultas, afiné índices SQL y añadí estrategias de caché para estabilizar el consumo de datos en vivo.
                     </div>
                     <div class="project-metrics">
                         <span class="metric">⚡ -78% latencia queries</span>
                         <span class="metric">📊 Real-time analytics</span>
                     </div>
+                    <p class="project-summary">Resultado: reportes más ágiles, navegación más fluida y una experiencia confiable para usuarios que dependen del panel a diario.</p>
                     <div class="project-tech">
                         <span class="tech-tag">React</span>
                         <span class="tech-tag">Node.js</span>
@@ -221,18 +253,20 @@
 
                 <!-- Proyecto 3 -->
                 <div class="project-card">
+                    <span class="project-kicker">Escalabilidad</span>
                     <div class="project-image">🛒</div>
                     <h3>E-Commerce escalable</h3>
                     <div class="project-challenge">
-                        <strong>Reto:</strong> Infraestructura incapaz de soportar picos de tráfico
+                        <strong>Reto:</strong> La plataforma no soportaba picos de tráfico ni mantenía tiempos de respuesta consistentes en campañas de alta demanda.
                     </div>
                     <div class="project-solution">
-                        <strong>Solución:</strong> Arquitectura modular con APIs REST escalables y base de datos optimizada
+                        <strong>Solución:</strong> Planteé una arquitectura modular con APIs REST, separación de responsabilidades y optimización de base de datos para crecer sin frenar el negocio.
                     </div>
                     <div class="project-metrics">
                         <span class="metric">🚀 10K req/min</span>
                         <span class="metric">💰 +500% ventas</span>
                     </div>
+                    <p class="project-summary">Resultado: una base técnica preparada para campañas intensivas, mayor estabilidad y mejor conversión en momentos clave.</p>
                     <div class="project-tech">
                         <span class="tech-tag">Node.js</span>
                         <span class="tech-tag">PostgreSQL</span>
@@ -250,64 +284,64 @@
     <!-- SECCIÓN EXPERIENCIA Y LOGROS -->
     <section id="experiencia" class="section experience">
         <div class="container">
-            <h2>Experiencia & Logros</h2>
+            <h2>Impacto Profesional</h2>
             
             <!-- Logros Cuantificables -->
             <div class="achievements">
-                <h3 class="achievements-title">📊 Logros Cuantificables</h3>
+                <h3 class="achievements-title">Resultados Medibles</h3>
                 <div class="achievements-grid">
                     <div class="achievement-card">
                         <div class="achievement-metric">-78%</div>
-                        <p>Optimización de consultas SQL</p>
+                        <p>reducción de latencia en consultas SQL críticas</p>
                     </div>
                     <div class="achievement-card">
                         <div class="achievement-metric">+300%</div>
-                        <p>Incremento de productividad</p>
+                        <p>mejora de productividad en operaciones internas</p>
                     </div>
                     <div class="achievement-card">
                         <div class="achievement-metric">10K</div>
-                        <p>Solicitudes/minuto en producción</p>
+                        <p>solicitudes por minuto en escenarios de carga</p>
                     </div>
                     <div class="achievement-card">
                         <div class="achievement-metric">48h→min</div>
-                        <p>Reducción de tiempos de respuesta</p>
+                        <p>reducción de tiempos de respuesta operativa</p>
                     </div>
                 </div>
             </div>
 
             <!-- Competencias Técnicas -->
             <div class="experience-list">
-                <h3 class="achievements-title">🔧 Áreas de Especialidad</h3>
+                <h3 class="achievements-title">Áreas Donde Aporto Más Valor</h3>
                 <div class="experience-grid">
                     <div class="experience-item">
                         <h4>Arquitectura de Sistemas</h4>
-                        <p>Diseño de soluciones escalables, modularidad, patrones de diseño y optimización de performance</p>
+                        <p>Diseño soluciones escalables y modulares que facilitan mantenimiento, crecimiento y estabilidad operativa.</p>
                     </div>
                     <div class="experience-item">
                         <h4>Optimización de Bases de Datos</h4>
-                        <p>Indexación estratégica, query optimization, normalización y gestión de transacciones</p>
+                        <p>Mejoro consultas, estructura de datos e indexación para reducir cuellos de botella y acelerar procesos críticos.</p>
                     </div>
                     <div class="experience-item">
                         <h4>APIs y Microservicios</h4>
-                        <p>Diseño de APIs REST, seguridad, versionado y documentación técnica</p>
+                        <p>Construyo APIs claras y mantenibles, con separación por responsabilidades y foco en integración confiable.</p>
                     </div>
                     <div class="experience-item">
                         <h4>Automatización & Scripting</h4>
-                        <p>Scripts en bash/PowerShell, automatización de procesos, CI/CD</p>
+                        <p>Automatizo tareas repetitivas con scripting y reduzco fricción operativa en equipos que necesitan velocidad y orden.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Soft Skills -->
             <div class="soft-skills">
-                <h3 class="achievements-title">💡 Soft Skills para Ingeniería</h3>
+                <h3 class="achievements-title">Forma de Trabajo</h3>
                 <div class="soft-skills-list">
-                    <span class="skill-badge">✓ Resolución de Problemas Críticos</span>
-                    <span class="skill-badge">✓ Metodologías Ágile/Scrum</span>
-                    <span class="skill-badge">✓ Documentación Técnica Avanzada</span>
-                    <span class="skill-badge">✓ Trabajo en Equipo Multidisciplinario</span>
-                    <span class="skill-badge">✓ Liderazgo Técnico</span>
-                    <span class="skill-badge">✓ Debugging & Troubleshooting</span>
+                    <span class="skill-badge">Resolución de problemas críticos</span>
+                    <span class="skill-badge">Comunicación técnica clara</span>
+                    <span class="skill-badge">Trabajo colaborativo con negocio y desarrollo</span>
+                    <span class="skill-badge">Documentación útil y mantenible</span>
+                    <span class="skill-badge">Debugging estructurado</span>
+                    <span class="skill-badge">Mentalidad de mejora continua</span>
                 </div>
             </div>
         </div>
@@ -317,6 +351,7 @@
     <section id="contacto" class="section contact">
         <div class="container">
             <h2>Contacto</h2>
+            <p class="contact-lead">Disponible para proyectos, colaboraciones o nuevas oportunidades donde haga falta criterio técnico, velocidad de ejecución y foco en resultados.</p>
             <div class="social-links">
                 <a href="https://github.com" target="_blank" class="social-link">GitHub</a>
                 <a href="https://linkedin.com" target="_blank" class="social-link">LinkedIn</a>
