@@ -11,13 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Fetch repos
         run: |
           curl -H "Authorization: Bearer ${{ secrets.PRIVATE_REPOS_TOKEN }}" \
-          https://api.github.com/users/lnavarroto/repos \
+          https://api.github.com/user/repos?per_page=100 \
           > repos.json
 
       - name: Commit repos.json
