@@ -94,17 +94,39 @@ function tiempoRelativo(fechaISO) {
     return `hace ${años} año${años !== 1 ? 's' : ''}`;
 }
 
+function imagenRepo(repo) {
+    if (repo.private) {
+        const inicial = repo.name.charAt(0).toUpperCase();
+        return `<div class="repo-card-img repo-card-img--privado" aria-hidden="true">
+            <div class="repo-img-privado-inner">
+                <svg class="repo-lock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="#484f58" stroke-width="1.5"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#484f58" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span class="repo-img-inicial">${inicial}</span>
+                <span class="repo-img-privado-label">Repositorio privado</span>
+            </div>
+        </div>`;
+    }
+    return `<div class="repo-card-img">
+        <img
+            src="https://opengraph.githubassets.com/1/lnavarroto/${repo.name}"
+            alt="Preview de ${repo.name}"
+            loading="lazy"
+            onerror="this.closest('.repo-card-img').classList.add('repo-card-img--fallback'); this.remove();"
+        >
+        <div class="repo-img-overlay"></div>
+    </div>`;
+}
+
 async function cargarEstadisticasGitHub(wrapper) {
     const banner = document.createElement('div');
     banner.className = 'github-stats-banner';
-    banner.innerHTML = '<span class="stats-loading">Cargando estadísticas...</span>';
+    banner.innerHTML = '<span class="stats-loading">Cargando perfil...</span>';
     wrapper.insertAdjacentElement('afterbegin', banner);
 
     try {
-        const [userRes, reposData] = await Promise.all([
-            fetch('https://api.github.com/users/lnavarroto'),
-            Promise.resolve(null)
-        ]);
+        const userRes = await fetch('https://api.github.com/users/lnavarroto');
 
         if (!userRes.ok) {
             banner.remove();
@@ -112,24 +134,37 @@ async function cargarEstadisticasGitHub(wrapper) {
         }
 
         const user = await userRes.json();
+        const bio = user.bio ? `<p class="github-profile-bio">${user.bio}</p>` : '';
 
         banner.innerHTML = `
-            <div class="github-stat">
-                <strong>${user.public_repos}</strong>
-                <span>Repos públicos</span>
+            <div class="github-profile-card">
+                <img class="github-avatar" src="${user.avatar_url}" alt="${user.login}" loading="lazy">
+                <div class="github-profile-info">
+                    <strong class="github-profile-name">${user.name ?? user.login}</strong>
+                    ${bio}
+                    <a class="github-profile-link" href="${user.html_url}" target="_blank" rel="noopener noreferrer">
+                        @${user.login} <span aria-hidden="true">→</span>
+                    </a>
+                </div>
             </div>
-            <div class="github-stat">
-                <strong>${user.followers}</strong>
-                <span>Seguidores</span>
+            <div class="github-stats-grid">
+                <div class="github-stat">
+                    <strong>${user.public_repos}</strong>
+                    <span>Repos</span>
+                </div>
+                <div class="github-stat">
+                    <strong>${user.followers}</strong>
+                    <span>Seguidores</span>
+                </div>
+                <div class="github-stat">
+                    <strong>${user.following}</strong>
+                    <span>Siguiendo</span>
+                </div>
+                <a class="github-stat github-stat-cta" href="${user.html_url}" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+                    <span>Ver perfil</span>
+                </a>
             </div>
-            <div class="github-stat">
-                <strong>${user.following}</strong>
-                <span>Siguiendo</span>
-            </div>
-            <a class="github-stat github-stat-link" href="${user.html_url}" target="_blank" rel="noopener noreferrer">
-                <strong>GitHub</strong>
-                <span>Ver perfil →</span>
-            </a>
         `;
     } catch (e) {
         banner.remove();
@@ -216,9 +251,10 @@ async function cargarRepos() {
 
         contenedor.innerHTML = '';
 
-        repos.forEach((repo) => {
+        repos.forEach((repo, index) => {
             const proyecto = document.createElement('article');
             proyecto.classList.add('repo-card');
+            if (index === 0) proyecto.classList.add('repo-card--featured');
 
             const langColor = colorLenguaje(repo.language);
             const esPrivado = repo.private;
@@ -226,33 +262,37 @@ async function cargarRepos() {
             const totalForks = repo.forks_count ?? 0;
 
             proyecto.innerHTML = `
-                <div class="repo-card-header">
-                    <h4 class="repo-name">${repo.name}</h4>
-                    <span class="repo-badge ${esPrivado ? 'badge-privado' : 'badge-publico'}">
-                        ${esPrivado ? '🔒 Privado' : '🌐 Público'}
-                    </span>
+                ${imagenRepo(repo)}
+                <div class="repo-card-body">
+                    <div class="repo-card-header">
+                        <h4 class="repo-name">${repo.name}</h4>
+                        <span class="repo-badge ${esPrivado ? 'badge-privado' : 'badge-publico'}">
+                            ${esPrivado ? '🔒 Privado' : '🌐 Público'}
+                        </span>
+                    </div>
+
+                    <p class="repo-desc">${repo.description ?? 'Proyecto en desarrollo'}</p>
+
+                    <div class="repo-commits">
+                        <span class="repo-commit-dot"></span>
+                        Última actividad: <strong>${tiempoRelativo(repo.updated_at)}</strong>
+                    </div>
+
+                    <div class="repo-meta">
+                        ${repo.language ? `
+                        <span class="repo-lang">
+                            <span class="lang-dot" style="background:${langColor}"></span>
+                            ${repo.language}
+                        </span>` : ''}
+                        <span class="repo-stars">⭐ ${totalStars}</span>
+                        ${totalForks ? `<span class="repo-forks">🍴 ${totalForks}</span>` : ''}
+                    </div>
+
+                    <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+                        Ver proyecto
+                        <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.75.75 0 0 1-1.5 0V2.561l-3.97 3.97a.749.749 0 0 1-1.06-1.06l3.97-3.97H10.604a.75.75 0 0 1 0-1.5Z"/></svg>
+                    </a>
                 </div>
-
-                <p class="repo-desc">${repo.description ?? 'Proyecto en desarrollo'}</p>
-
-                <div class="repo-commits">
-                    <span class="repo-commit-dot"></span>
-                    Última actividad: <strong>${tiempoRelativo(repo.updated_at)}</strong>
-                </div>
-
-                <div class="repo-meta">
-                    ${repo.language ? `
-                    <span class="repo-lang">
-                        <span class="lang-dot" style="background:${langColor}"></span>
-                        ${repo.language}
-                    </span>` : ''}
-                    <span class="repo-stars">⭐ ${totalStars}</span>
-                    ${totalForks ? `<span class="repo-forks">🍴 ${totalForks}</span>` : ''}
-                </div>
-
-                <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
-                    Ver en GitHub →
-                </a>
             `;
 
             contenedor.appendChild(proyecto);
