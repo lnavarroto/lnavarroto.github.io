@@ -48,7 +48,23 @@ updateNavbarState();
 updateActiveLink();
 
 // ==================== GITHUB REPOSITORIES ====================
-async function obtenerReposDesdeEndpoint(url) {
+async function obtenerReposEstaticos(url) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Error al consultar ${url}`);
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+        throw new Error('El archivo no contiene un array valido.');
+    }
+
+    return data;
+}
+
+async function obtenerReposPaginados(url) {
     const todos = [];
     let pagina = 1;
 
@@ -81,16 +97,13 @@ async function obtenerReposDesdeEndpoint(url) {
 
 async function obtenerReposGitHub() {
     try {
-        const sincronizados = await obtenerReposDesdeEndpoint('/repos.json?origen=actions');
+        // Primero intenta el JSON generado por GitHub Actions (incluye privados)
+        const sincronizados = await obtenerReposEstaticos('/repos.json');
         return { repos: sincronizados, origen: 'sincronizado' };
     } catch (errorSincronizado) {
-        try {
-            const privados = await obtenerReposDesdeEndpoint('/api/repos');
-            return { repos: privados, origen: 'privado' };
-        } catch (errorPrivado) {
-            const publicos = await obtenerReposDesdeEndpoint('https://api.github.com/users/lnavarroto/repos?sort=updated');
-            return { repos: publicos, origen: 'publico' };
-        }
+        // Fallback: API publica de GitHub (solo publicos)
+        const publicos = await obtenerReposPaginados('https://api.github.com/users/lnavarroto/repos?sort=updated');
+        return { repos: publicos, origen: 'publico' };
     }
 }
 
@@ -131,17 +144,10 @@ async function cargarRepos() {
             contenedor.appendChild(proyecto);
         });
 
-        if (origen === 'sincronizado') {
-            const mensaje = document.createElement('p');
-            mensaje.className = 'repos-status';
-            mensaje.textContent = 'Mostrando repos sincronizados para GitHub Pages (incluye privados si estan exportados).';
-            contenedor.prepend(mensaje);
-        }
-
         if (origen === 'publico') {
             const mensaje = document.createElement('p');
             mensaje.className = 'repos-status';
-            mensaje.textContent = 'Mostrando modo publico. Configura sincronizacion en data/repos.json para incluir privados en GitHub Pages.';
+            mensaje.textContent = 'Mostrando solo repositorios publicos. Ejecuta el workflow Sync GitHub Repositories para incluir privados.';
             contenedor.prepend(mensaje);
         }
 
