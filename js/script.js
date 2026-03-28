@@ -81,7 +81,7 @@ async function obtenerReposDesdeEndpoint(url) {
 
 async function obtenerReposGitHub() {
     try {
-        const sincronizados = await obtenerReposDesdeEndpoint('/data/repos.json?origen=actions');
+        const sincronizados = await obtenerReposDesdeEndpoint('/repos.json?origen=actions');
         return { repos: sincronizados, origen: 'sincronizado' };
     } catch (errorSincronizado) {
         try {
