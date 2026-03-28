@@ -94,18 +94,70 @@ function tiempoRelativo(fechaISO) {
     return `hace ${años} año${años !== 1 ? 's' : ''}`;
 }
 
+function generarSvgRepo(repo) {
+    const acento = colorLenguaje(repo.language);
+    const lang = repo.language ?? '';
+    const nombre = repo.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const desc = (repo.description ?? 'Proyecto privado').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const descCorta = desc.length > 55 ? desc.slice(0, 52) + '…' : desc;
+
+    // Lineas decorativas de código
+    const lineas = [
+        { x: 56, w: 90, op: 0.5 },
+        { x: 56, w: 140, op: 0.35 },
+        { x: 56, w: 60, op: 0.25 },
+        { x: 72, w: 110, op: 0.4 },
+        { x: 72, w: 80, op: 0.3 },
+        { x: 56, w: 50, op: 0.2 },
+    ];
+
+    const lineasSvg = lineas.map((l, i) =>
+        `<rect x="${l.x}" y="${62 + i * 13}" width="${l.w}" height="5" rx="2.5" fill="${acento}" fill-opacity="${l.op}"/>`
+    ).join('');
+
+    const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+        <defs>
+            <linearGradient id="bg${repo.name.replace(/\W/g, '')}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0d1117"/>
+                <stop offset="100%" stop-color="#161b22"/>
+            </linearGradient>
+        </defs>
+        <rect width="400" height="200" fill="url(#bg${repo.name.replace(/\W/g, '')})"/>
+        <!-- Borde acento superior -->
+        <rect x="0" y="0" width="400" height="3" fill="${acento}" fill-opacity="0.8"/>
+        <!-- Cabecera tipo editor -->
+        <rect x="0" y="0" width="400" height="34" fill="${acento}" fill-opacity="0.06"/>
+        <!-- Círculos de título de ventana -->
+        <circle cx="20" cy="17" r="5" fill="#ff5f57" fill-opacity="0.8"/>
+        <circle cx="36" cy="17" r="5" fill="#febc2e" fill-opacity="0.8"/>
+        <circle cx="52" cy="17" r="5" fill="#28c840" fill-opacity="0.8"/>
+        <!-- Nombre del repo en la barra -->
+        <text x="72" y="22" font-family="'Courier New', monospace" font-size="11" fill="${acento}" fill-opacity="0.9">${nombre}.${lang ? lang.toLowerCase().replace(/[^a-z0-9]/g, '') : 'txt'}</text>
+        <!-- Candado sutil + PRIVATE badge -->
+        <text x="350" y="22" font-family="sans-serif" font-size="9" fill="#484f58" text-anchor="middle">🔒 PRIVATE</text>
+        <!-- Líneas decorativas de código -->
+        <!-- números de línea -->
+        ${[1,2,3,4,5,6].map((n, i) => `<text x="40" y="${67 + i * 13}" font-family="'Courier New', monospace" font-size="9" fill="#3d444d" text-anchor="end">${n}</text>`).join('')}
+        ${lineasSvg}
+        <!-- Separador -->
+        <rect x="24" y="155" width="352" height="1" fill="${acento}" fill-opacity="0.12"/>
+        <!-- Nombre grande del proyecto -->
+        <text x="24" y="175" font-family="'Courier New', monospace" font-size="16" font-weight="bold" fill="#e6edf3">${nombre}</text>
+        <!-- Descripción -->
+        <text x="24" y="192" font-family="sans-serif" font-size="10" fill="#6e7681">${descCorta}</text>
+        <!-- Lenguaje dot -->
+        ${lang ? `<circle cx="370" cy="172" r="6" fill="${acento}"/><text x="358" y="191" font-family="sans-serif" font-size="9" fill="${acento}" text-anchor="middle">${lang}</text>` : ''}
+    </svg>`;
+
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+}
+
 function imagenRepo(repo) {
     if (repo.private) {
-        const inicial = repo.name.charAt(0).toUpperCase();
-        return `<div class="repo-card-img repo-card-img--privado" aria-hidden="true">
-            <div class="repo-img-privado-inner">
-                <svg class="repo-lock-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="11" width="18" height="11" rx="2" stroke="#484f58" stroke-width="1.5"/>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#484f58" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                <span class="repo-img-inicial">${inicial}</span>
-                <span class="repo-img-privado-label">Repositorio privado</span>
-            </div>
+        const svgSrc = generarSvgRepo(repo);
+        return `<div class="repo-card-img">
+            <img src="${svgSrc}" alt="Preview de ${repo.name}" aria-hidden="true">
+            <div class="repo-img-overlay"></div>
         </div>`;
     }
     return `<div class="repo-card-img">
@@ -113,7 +165,7 @@ function imagenRepo(repo) {
             src="https://opengraph.githubassets.com/1/lnavarroto/${repo.name}"
             alt="Preview de ${repo.name}"
             loading="lazy"
-            onerror="this.closest('.repo-card-img').classList.add('repo-card-img--fallback'); this.remove();"
+            onerror="this.src='${encodeURIComponent('<!-- se reemplaza en runtime -->')}'; this.closest('.repo-card-img').classList.add('repo-card-img--svg');"
         >
         <div class="repo-img-overlay"></div>
     </div>`;

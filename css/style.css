@@ -741,42 +741,6 @@ h2 {
     pointer-events: none;
 }
 
-/* Privado / fallback placeholder */
-.repo-card-img--privado,
-.repo-card-img--fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #0d1117 0%, #161b22 60%, #1c2128 100%);
-}
-
-.repo-img-privado-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    opacity: 0.65;
-}
-
-.repo-lock-icon {
-    width: 28px;
-    height: 28px;
-}
-
-.repo-img-inicial {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #30363d;
-    line-height: 1;
-    font-family: 'Courier New', monospace;
-}
-
-.repo-img-privado-label {
-    font-size: 0.72rem;
-    color: #484f58;
-    letter-spacing: 0.04em;
-}
-
 /* ── Card body ── */
 .repo-card-body {
     display: flex;
