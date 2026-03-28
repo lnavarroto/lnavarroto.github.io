@@ -196,87 +196,10 @@
     <section id="proyectos" class="section projects">
         <div class="container">
             <h2>Proyectos Destacados</h2>
-            <div class="projects-grid">
-                <!-- Proyecto 1 -->
-                <div class="project-card">
-                    <span class="project-kicker">Sistema interno</span>
-                    <div class="project-image">📊</div>
-                    <h3>Sistema de Mesa de Partes</h3>
-                    <div class="project-challenge">
-                        <strong>Reto:</strong> La operación dependía de registro manual y generaba retrasos de hasta 48 horas en seguimiento y respuesta.
-                    </div>
-                    <div class="project-solution">
-                        <strong>Solución:</strong> Diseñé un flujo centralizado con automatización, trazabilidad por estado y persistencia en Supabase para acelerar atención y control.
-                    </div>
-                    <div class="project-metrics">
-                        <span class="metric">⏱️ -95% tiempo respuesta</span>
-                        <span class="metric">📈 +300% productividad</span>
-                    </div>
-                    <p class="project-summary">Resultado: un sistema más confiable para equipos administrativos, con menos fricción operativa y mejor visibilidad de cada trámite.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Supabase</span>
-                        <span class="tech-tag">PostgreSQL</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank" class="link-btn">GitHub</a>
-                        <a href="#" target="_blank" class="link-btn">Demo</a>
-                    </div>
-                </div>
-
-                <!-- Proyecto 2 -->
-                <div class="project-card">
-                    <span class="project-kicker">Analytics & performance</span>
-                    <div class="project-image">💼</div>
-                    <h3>Panel Administrativo avanzado</h3>
-                    <div class="project-challenge">
-                        <strong>Reto:</strong> El dashboard sufría demoras en consultas y afectaba la lectura de reportes en tiempo real para la toma de decisiones.
-                    </div>
-                    <div class="project-solution">
-                        <strong>Solución:</strong> Reorganicé consultas, afiné índices SQL y añadí estrategias de caché para estabilizar el consumo de datos en vivo.
-                    </div>
-                    <div class="project-metrics">
-                        <span class="metric">⚡ -78% latencia queries</span>
-                        <span class="metric">📊 Real-time analytics</span>
-                    </div>
-                    <p class="project-summary">Resultado: reportes más ágiles, navegación más fluida y una experiencia confiable para usuarios que dependen del panel a diario.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">PostgreSQL</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank" class="link-btn">GitHub</a>
-                        <a href="#" target="_blank" class="link-btn">Demo</a>
-                    </div>
-                </div>
-
-                <!-- Proyecto 3 -->
-                <div class="project-card">
-                    <span class="project-kicker">Escalabilidad</span>
-                    <div class="project-image">🛒</div>
-                    <h3>E-Commerce escalable</h3>
-                    <div class="project-challenge">
-                        <strong>Reto:</strong> La plataforma no soportaba picos de tráfico ni mantenía tiempos de respuesta consistentes en campañas de alta demanda.
-                    </div>
-                    <div class="project-solution">
-                        <strong>Solución:</strong> Planteé una arquitectura modular con APIs REST, separación de responsabilidades y optimización de base de datos para crecer sin frenar el negocio.
-                    </div>
-                    <div class="project-metrics">
-                        <span class="metric">🚀 10K req/min</span>
-                        <span class="metric">💰 +500% ventas</span>
-                    </div>
-                    <p class="project-summary">Resultado: una base técnica preparada para campañas intensivas, mayor estabilidad y mejor conversión en momentos clave.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">PostgreSQL</span>
-                        <span class="tech-tag">REST APIs</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com" target="_blank" class="link-btn">GitHub</a>
-                        <a href="#" target="_blank" class="link-btn">Demo</a>
-                    </div>
-                </div>
+            <div class="github-projects-block">
+                <h3 class="github-projects-title">Todos mis repositorios de GitHub</h3>
+                <p class="github-projects-note">Se listan automaticamente todos los repositorios. En GitHub Pages, los privados se muestran si se sincronizan con GitHub Actions.</p>
+                <div class="projects-container" id="repos"></div>
             </div>
         </div>
     </section>

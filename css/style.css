@@ -480,6 +480,104 @@ h2 {
     gap: 1.5rem;
 }
 
+.github-projects-block {
+    margin-top: 2rem;
+    padding: 1.75rem;
+    border-radius: 24px;
+    background: rgba(31, 39, 45, 0.78);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-md);
+}
+
+.github-projects-title {
+    margin-bottom: 1.25rem;
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.github-projects-note {
+    margin-top: -0.35rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.repo-card {
+    padding: 1.15rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    transition: transform var(--transition), border-color var(--transition), background-color var(--transition);
+}
+
+.repo-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(6, 182, 212, 0.45);
+    background: rgba(6, 182, 212, 0.06);
+}
+
+.repo-card h4 {
+    margin-bottom: 0.55rem;
+    font-size: 1.06rem;
+    color: var(--text-primary);
+}
+
+.repo-card p {
+    min-height: 44px;
+    margin-bottom: 0.95rem;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+}
+
+.repo-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 0.85rem;
+}
+
+.repo-info span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: #a5f3fc;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.repo-card a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
+    transition: border-color var(--transition), background-color var(--transition), transform var(--transition);
+}
+
+.repo-card a:hover {
+    transform: translateY(-2px);
+    border-color: rgba(6, 182, 212, 0.5);
+    background: rgba(6, 182, 212, 0.08);
+}
+
+.repos-status {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
 .project-card {
     padding: 1.75rem;
     display: grid;
@@ -753,6 +851,7 @@ h2 {
     }
 
     .projects-grid,
+    .projects-container,
     .tech-grid,
     .achievements-grid,
     .experience-grid {

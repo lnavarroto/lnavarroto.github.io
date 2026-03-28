@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/repos.js": {
+      "maxDuration": 10
+    }
+  }
+}

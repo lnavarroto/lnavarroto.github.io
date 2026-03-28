@@ -6,6 +6,33 @@ Mi portafolio profesional como desarrollador web full stack. Aquí puedes encont
 
 Visita mi portafolio: [https://lnavarroto.github.io](https://lnavarroto.github.io)
 
+## 🔒 Mostrar Repositorios Privados de GitHub
+
+Este portafolio soporta GitHub Pages usando sincronizacion automatica con GitHub Actions.
+
+### Requisitos
+
+- Agregar el secreto `PRIVATE_REPOS_TOKEN` en GitHub:
+    - Repo -> Settings -> Secrets and variables -> Actions -> New repository secret.
+    - Valor: token con permisos para leer repos privados.
+
+### Flujo de funcionamiento
+
+- El workflow `.github/workflows/sync-repos.yml` ejecuta `scripts/export-repos.mjs`.
+- El script consulta GitHub y guarda todo en `data/repos.json`.
+- Tu frontend en GitHub Pages lee `data/repos.json` y muestra todos los proyectos.
+- Si no existe sincronizacion, el frontend cae automaticamente a la API publica.
+
+### Ejecutar ahora
+
+- Abre Actions en tu repo y ejecuta manualmente `Sync GitHub Repositories`.
+- Luego espera el deploy de Pages para ver los cambios en https://lnavarroto.github.io.
+
+### Seguridad
+
+- Nunca coloques el token en el frontend.
+- Todo lo que llegue a `data/repos.json` sera publico en tu web.
+
 ## 📋 Contenido del Portafolio
 
 ### 🎯 Secciones Principales
