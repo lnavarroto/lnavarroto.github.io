@@ -23,52 +23,49 @@
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
             <a href="#contacto" class="nav-cta">Hablemos</a>
+            <button id="darkModeToggle" aria-label="Cambiar modo oscuro" class="darkmode-btn">🌙</button>
         </div>
     </nav>
 
     <!-- SECCIÓN HERO -->
-    <section id="inicio" class="hero">
-        <div class="container">
-            <div class="hero-panel">
-                <div class="hero-profile-slot" aria-label="Espacio reservado para foto de perfil">
-                    <div class="hero-profile-placeholder">
-                        <span>Tu foto</span>
-                        <small>Colócala aquí</small>
+ <section id="inicio" class="hero">
+
+        <div class="hero-panel">
+            <div class="container hero-dashboard">
+                <div class="hero-main">
+                    <h1 class="hero-title">Luis Navarro</h1>
+                    <p class="hero-subtitle">Ingeniero de Sistemas | Full Stack Developer</p>
+                    <p class="hero-description-alt">Construyo aplicaciones web y de escritorio con foco en arquitectura limpia, APIs mantenibles y automatización de procesos que reducen tiempos operativos.</p>
+                    <div class="hero-btns-row">
+                        <a href="cv.pdf" download class="btn btn-primary">Descargar CV</a>
+                        <a href="#proyectos" class="btn btn-secondary">Ver Proyectos</a>
+                    </div>
+                    <div class="metrics-dashboard">
+                        <div class="metric-card metric-blue">
+                            <div class="metric-value">-78%</div>
+                            <div class="metric-label">latencia en consultas<br>críticas</div>
+                            <div class="metric-icon">⚡</div>
+                        </div>
+                        <div class="metric-card metric-cyan">
+                            <div class="metric-value">48h <span class="metric-unit">MIN</span></div>
+                            <div class="metric-label">tiempos de respuesta<br>operativa</div>
+                            <div class="metric-icon">⏱️</div>
+                        </div>
+                        <div class="metric-card metric-purple">
+                            <div class="metric-value">10K</div>
+                            <div class="metric-label">capacidad en alta<br>demanda</div>
+                            <div class="metric-icon">📈</div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="hero-content">
-                    <p class="hero-eyebrow">Ingeniería de sistemas orientada a producto, rendimiento y automatización</p>
-                    <h1>Luis Navarro | Systems Engineer & Full Stack Developer</h1>
-                    <p class="hero-description">Construyo aplicaciones web y de escritorio con foco en arquitectura limpia, APIs mantenibles, consultas rápidas y automatización de procesos que realmente reducen tiempos operativos.</p>
-                    <div class="hero-highlights">
-                        <span class="hero-pill">Node.js, React, Python y Electron</span>
-                        <span class="hero-pill">Optimización SQL y diseño de APIs</span>
-                        <span class="hero-pill">Automatización de procesos administrativos</span>
-                    </div>
-                    <div class="hero-buttons">
-                        <a href="#proyectos" class="btn btn-primary">Ver Proyectos</a>
-                        <a href="cv.pdf" download class="btn btn-tertiary" title="Descargar CV en PDF">Descargar CV</a>
-                        <a href="#contacto" class="btn btn-secondary">Contactarme</a>
-                    </div>
-                    <div class="hero-metrics">
-                        <div class="hero-metric">
-                            <strong>-78%</strong>
-                            <span>latencia en consultas críticas</span>
-                        </div>
-                        <div class="hero-metric">
-                            <strong>48h a min</strong>
-                            <span>en tiempos de respuesta operativa</span>
-                        </div>
-                        <div class="hero-metric">
-                            <strong>10K req/min</strong>
-                            <span>capacidad en escenarios de alta demanda</span>
-                        </div>
-                    </div>
+                <div class="hero-profile-slot hero-profile-dashboard">
+                    <img src="assets/images/foto.png" alt="Luis Navarro - Ingeniero de Sistemas" class="hero-profile-image animated-glow">
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+</section>
 
     <!-- SECCIÓN SOBRE MÍ -->
     <section id="sobre-mi" class="section about">
@@ -198,8 +195,21 @@
             <h2>Proyectos Destacados</h2>
             <div class="github-projects-block">
                 <h3 class="github-projects-title">Todos mis repositorios de GitHub</h3>
-                <p class="github-projects-note">Se listan automaticamente todos los repositorios. En GitHub Pages, los privados se muestran si se sincronizan con GitHub Actions.</p>
+                <p class="github-projects-note">Se listan automáticamente todos los repositorios. En GitHub Pages, los privados se muestran si se sincronizan con GitHub Actions.</p>
                 <div class="projects-container" id="repos"></div>
+            </div>
+            <div class="testimonials-block">
+                <h3 class="testimonials-title">Testimonios</h3>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p>"Luis es un referente en automatización y calidad técnica. Su código siempre es claro y escalable."</p>
+                        <span class="testimonial-author">— CTO, Empresa X</span>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Transformó procesos lentos en soluciones ágiles y medibles. 100% recomendado para proyectos críticos."</p>
+                        <span class="testimonial-author">— Líder de Operaciones, Empresa Y</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -293,5 +303,13 @@
 
     <!-- LIBRERÍAS -->
     <script src="js/script.js"></script>
+    <script>
+    // Modo oscuro/claro
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        darkModeToggle.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+    });
+    </script>
 </body>
 </html>
