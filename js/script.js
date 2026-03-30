@@ -1,6 +1,340 @@
 const navbar = document.querySelector('.navbar');
 const navLinks = document.querySelectorAll('.nav-links a');
+const navToggle = document.getElementById('navToggle');
 const pageSections = document.querySelectorAll('section[id]');
+const darkModeToggle = document.getElementById('darkModeToggle');
+const THEME_KEY = 'ln-theme';
+let mobileNavIndicatorLabel = null;
+
+function closeMobileMenu() {
+    if (!navbar || !navToggle) {
+        return;
+    }
+
+    navbar.classList.remove('menu-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menú');
+}
+
+function initMobileMenu() {
+    if (!navbar || !navToggle) {
+        return;
+    }
+
+    navToggle.addEventListener('click', () => {
+        const willOpen = !navbar.classList.contains('menu-open');
+        navbar.classList.toggle('menu-open', willOpen);
+        navToggle.setAttribute('aria-expanded', String(willOpen));
+        navToggle.setAttribute('aria-label', willOpen ? 'Cerrar menú' : 'Abrir menú');
+    });
+
+    navLinks.forEach((link) => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 992) {
+            closeMobileMenu();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeMobileMenu();
+        }
+    });
+}
+
+function applyTheme(theme) {
+    const useLightMode = theme === 'light';
+    document.body.classList.toggle('light-mode', useLightMode);
+
+    if (darkModeToggle) {
+        darkModeToggle.textContent = useLightMode ? '☀️' : '🌙';
+        darkModeToggle.setAttribute('aria-label', useLightMode ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+    }
+}
+
+function initTheme() {
+    const storedTheme = localStorage.getItem(THEME_KEY);
+    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    const initialTheme = storedTheme ?? (systemPrefersLight ? 'light' : 'dark');
+
+    applyTheme(initialTheme);
+
+    if (!darkModeToggle) {
+        return;
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        const nextTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+        localStorage.setItem(THEME_KEY, nextTheme);
+        applyTheme(nextTheme);
+    });
+}
+
+function initTechTabs() {
+    const tabs = Array.from(document.querySelectorAll('.tech-tab'));
+    const panels = Array.from(document.querySelectorAll('.tech-panel'));
+
+    if (!tabs.length || !panels.length) {
+        return;
+    }
+
+    const activateTab = (target) => {
+        tabs.forEach((tab) => {
+            const isActive = tab.dataset.techTarget === target;
+            tab.classList.toggle('is-active', isActive);
+            tab.setAttribute('aria-selected', String(isActive));
+        });
+
+        panels.forEach((panel) => {
+            const isActive = panel.dataset.techPanel === target;
+            panel.classList.toggle('is-active', isActive);
+            panel.hidden = !isActive;
+        });
+    };
+
+    tabs.forEach((tab) => {
+        const target = tab.dataset.techTarget;
+        if (!target) {
+            return;
+        }
+
+        tab.addEventListener('click', () => activateTab(target));
+        tab.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                activateTab(target);
+            }
+        });
+    });
+}
+
+function initCvModal() {
+    const openBtn = document.getElementById('openCvModal');
+    const closeBtn = document.getElementById('closeCvModal');
+    const modal = document.getElementById('cvModal');
+
+    if (!openBtn || !closeBtn || !modal) {
+        return;
+    }
+
+    const closeTargets = modal.querySelectorAll('[data-close-cv-modal]');
+
+    const openModal = () => {
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+    };
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+    };
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    closeTargets.forEach((target) => {
+        target.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) {
+            closeModal();
+        }
+    });
+}
+
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('contactFormStatus');
+    const contactModal = document.getElementById('contactModal');
+    const honeypotInput = document.getElementById('contactWebsite');
+    const startedAtInput = document.getElementById('contactStartedAt');
+
+    if (!form || !status) {
+        return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const minFillTimeMs = 2500;
+
+    if (startedAtInput) {
+        startedAtInput.value = String(Date.now());
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const nameInput = form.querySelector('#contactName');
+        const emailInput = form.querySelector('#contactEmail');
+        const subjectInput = form.querySelector('#contactSubject');
+        const messageInput = form.querySelector('#contactMessage');
+
+        const name = nameInput?.value.trim() ?? '';
+        const email = emailInput?.value.trim() ?? '';
+        const subject = subjectInput?.value.trim() ?? '';
+        const message = messageInput?.value.trim() ?? '';
+        const honeypotValue = honeypotInput?.value.trim() ?? '';
+        const startedAt = Number(startedAtInput?.value ?? 0);
+        const elapsed = Date.now() - startedAt;
+
+        if (honeypotValue) {
+            status.textContent = 'No se pudo enviar. Intenta nuevamente.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        if (!startedAt || elapsed < minFillTimeMs) {
+            status.textContent = 'Espera un momento y vuelve a enviar el formulario.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        if (!name || !email || !subject || !message) {
+            status.textContent = 'Completa todos los campos antes de enviar.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        if (!emailPattern.test(email)) {
+            status.textContent = 'Ingresa un email valido para continuar.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        const endpoint = form.getAttribute('action');
+        if (!endpoint) {
+            status.textContent = 'No se encontro el endpoint del formulario.';
+            status.classList.add('is-error');
+            return;
+        }
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn instanceof HTMLButtonElement) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+        }
+
+        status.classList.remove('is-error');
+        status.textContent = 'Enviando mensaje...';
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    subject: `[Portafolio] ${subject}`,
+                    message,
+                    source: 'Portafolio web',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo enviar el formulario.');
+            }
+
+            status.classList.remove('is-error');
+            status.textContent = 'Mensaje enviado con exito. Te respondere pronto.';
+            form.reset();
+
+            if (startedAtInput) {
+                startedAtInput.value = String(Date.now());
+            }
+
+            if (contactModal) {
+                setTimeout(() => {
+                    contactModal.hidden = true;
+                    document.body.classList.remove('modal-open');
+                }, 900);
+            }
+        } catch (error) {
+            status.textContent = 'Hubo un problema al enviar. Intenta nuevamente en unos segundos.';
+            status.classList.add('is-error');
+        } finally {
+            if (submitBtn instanceof HTMLButtonElement) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar mensaje';
+            }
+        }
+    });
+}
+
+function initContactModal() {
+    const modal = document.getElementById('contactModal');
+    const openTriggers = document.querySelectorAll('[data-open-contact-modal]');
+    const form = document.getElementById('contactForm');
+    const startedAtInput = document.getElementById('contactStartedAt');
+    const honeypotInput = document.getElementById('contactWebsite');
+    const status = document.getElementById('contactFormStatus');
+
+    if (!modal || !openTriggers.length) {
+        return;
+    }
+
+    const closeTargets = modal.querySelectorAll('[data-close-contact-modal]');
+
+    const openModal = () => {
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+        closeMobileMenu();
+
+        if (startedAtInput) {
+            startedAtInput.value = String(Date.now());
+        }
+
+        if (honeypotInput) {
+            honeypotInput.value = '';
+        }
+
+        if (status) {
+            status.textContent = '';
+            status.classList.remove('is-error');
+        }
+    };
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+
+        if (form) {
+            form.reset();
+        }
+
+        if (startedAtInput) {
+            startedAtInput.value = String(Date.now());
+        }
+
+        if (honeypotInput) {
+            honeypotInput.value = '';
+        }
+
+        if (status) {
+            status.textContent = '';
+            status.classList.remove('is-error');
+        }
+    };
+
+    openTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', openModal);
+    });
+
+    closeTargets.forEach((target) => {
+        target.addEventListener('click', closeModal);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) {
+            closeModal();
+        }
+    });
+}
 
 // ==================== SMOOTH SCROLL NAVIGATION ====================
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -19,6 +353,10 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 
 // ==================== NAVBAR EFFECT ON SCROLL ====================
 function updateNavbarState() {
+    if (!navbar) {
+        return;
+    }
+
     navbar.classList.toggle('scrolled', window.scrollY > 24);
 }
 
@@ -33,7 +371,12 @@ function updateActiveLink() {
 
         if (currentPosition >= sectionTop && currentPosition < sectionTop + sectionHeight) {
             navLinks.forEach((link) => {
-                link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                const isActive = link.getAttribute('href') === `#${sectionId}`;
+                link.classList.toggle('active', isActive);
+
+                if (isActive && mobileNavIndicatorLabel) {
+                    mobileNavIndicatorLabel.textContent = link.textContent?.trim() ?? 'Inicio';
+                }
             });
         }
     });
@@ -44,8 +387,82 @@ window.addEventListener('scroll', () => {
     updateActiveLink();
 });
 
+initTheme();
+initMobileMenu();
+initTechTabs();
+initCvModal();
+initContactModal();
+initContactForm();
 updateNavbarState();
 updateActiveLink();
+
+// ==================== SECTION REVEAL ON SCROLL ====================
+const revealTargets = document.querySelectorAll('.about, .technologies, .projects, .experience, .contact');
+const staggerTargets = document.querySelectorAll('.tech-item, .repo-card');
+
+function initMobileNavIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'mobile-nav-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+
+    const label = document.createElement('span');
+    label.className = 'mobile-nav-indicator__label';
+    label.textContent = 'Inicio';
+
+    indicator.appendChild(label);
+    document.body.appendChild(indicator);
+
+    mobileNavIndicatorLabel = label;
+
+    const syncIndicatorVisibility = () => {
+        const shouldShow = window.matchMedia('(max-width: 560px)').matches;
+        indicator.classList.toggle('is-visible', shouldShow);
+    };
+
+    syncIndicatorVisibility();
+    window.addEventListener('resize', syncIndicatorVisibility);
+}
+
+function observeStaggerItems() {
+    if (!('IntersectionObserver' in window)) {
+        staggerTargets.forEach((item) => item.classList.add('is-visible'));
+        return;
+    }
+
+    const staggerObserver = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                currentObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    staggerTargets.forEach((item, index) => {
+        item.classList.add('stagger-item');
+        item.style.setProperty('--stagger-index', String(index % 6));
+        staggerObserver.observe(item);
+    });
+}
+
+initMobileNavIndicator();
+observeStaggerItems();
+
+if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                currentObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.16 });
+
+    revealTargets.forEach((section) => {
+        section.classList.add('reveal');
+        observer.observe(section);
+    });
+}
 
 // ==================== GITHUB REPOSITORIES ====================
 
@@ -153,19 +570,23 @@ function generarSvgRepo(repo) {
 }
 
 function imagenRepo(repo) {
+    const fallbackSvg = generarSvgRepo(repo);
+    const repoSeguro = encodeURIComponent(repo.name);
+
     if (repo.private) {
-        const svgSrc = generarSvgRepo(repo);
         return `<div class="repo-card-img">
-            <img src="${svgSrc}" alt="Preview de ${repo.name}" aria-hidden="true">
+            <img src="${fallbackSvg}" alt="Preview de ${repo.name}" aria-hidden="true">
             <div class="repo-img-overlay"></div>
         </div>`;
     }
+
     return `<div class="repo-card-img">
         <img
-            src="https://opengraph.githubassets.com/1/lnavarroto/${repo.name}"
+            src="https://opengraph.githubassets.com/1/lnavarroto/${repoSeguro}"
             alt="Preview de ${repo.name}"
             loading="lazy"
-            onerror="this.src='${encodeURIComponent('<!-- se reemplaza en runtime -->')}'; this.closest('.repo-card-img').classList.add('repo-card-img--svg');"
+            class="repo-preview-img"
+            data-fallback-src="${fallbackSvg}"
         >
         <div class="repo-img-overlay"></div>
     </div>`;
@@ -182,7 +603,7 @@ async function cargarEstadisticasGitHub(wrapper) {
 
         if (!userRes.ok) {
             banner.remove();
-            return;
+            return null;
         }
 
         const user = await userRes.json();
@@ -200,7 +621,7 @@ async function cargarEstadisticasGitHub(wrapper) {
                 </div>
             </div>
             <div class="github-stats-grid">
-                <div class="github-stat">
+                <div class="github-stat github-stat--repos">
                     <strong>${user.public_repos}</strong>
                     <span>Repos</span>
                 </div>
@@ -218,8 +639,11 @@ async function cargarEstadisticasGitHub(wrapper) {
                 </a>
             </div>
         `;
+
+        return banner;
     } catch (e) {
         banner.remove();
+        return null;
     }
 }
 
@@ -290,32 +714,142 @@ async function cargarRepos() {
     }
 
     const wrapper = contenedor.closest('.github-projects-block');
-    if (wrapper) {
-        cargarEstadisticasGitHub(wrapper);
-    }
+    const bannerPromise = wrapper ? cargarEstadisticasGitHub(wrapper) : Promise.resolve(null);
+    let filtroActivo = 'all';
+    let aplicarFiltroReposGlobal = () => {};
 
     contenedor.innerHTML = '<p class="repos-status">Cargando repositorios...</p>';
 
     try {
-        const { repos, origen } = await obtenerReposGitHub();
+        const [{ repos, origen }, banner] = await Promise.all([
+            obtenerReposGitHub(),
+            bannerPromise,
+        ]);
 
         repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
         contenedor.innerHTML = '';
 
+        if (repos.length) {
+            const totalPrivados = repos.filter((repo) => repo.private).length;
+            const totalPublicos = repos.length - totalPrivados;
+
+            if (banner) {
+                const repoStatValue = banner.querySelector('.github-stat--repos strong');
+                const repoStatLabel = banner.querySelector('.github-stat--repos span');
+
+                if (repoStatValue) {
+                    repoStatValue.textContent = String(repos.length);
+                }
+
+                if (repoStatLabel) {
+                    repoStatLabel.textContent = 'Total';
+                }
+
+                const resumenExistente = banner.querySelector('.github-repo-summary');
+                if (resumenExistente) {
+                    resumenExistente.remove();
+                }
+
+                const resumen = document.createElement('div');
+                resumen.className = 'github-repo-summary';
+                resumen.innerHTML = `
+                    <span class="github-repo-summary__label">Resumen repos</span>
+                    <div class="projects-kpis" aria-label="Resumen de repositorios">
+                        <span class="projects-kpi projects-kpi--filter is-active" data-filter="all" role="button" tabindex="0" aria-pressed="true"><strong>${repos.length}</strong><em>Total</em></span>
+                        <span class="projects-kpi projects-kpi--public projects-kpi--filter" data-filter="public" role="button" tabindex="0" aria-pressed="false"><strong>${totalPublicos}</strong><em>Públicos</em></span>
+                        <span class="projects-kpi projects-kpi--private projects-kpi--filter" data-filter="private" role="button" tabindex="0" aria-pressed="false"><strong>${totalPrivados}</strong><em>Privados</em></span>
+                    </div>
+                `;
+
+                const repoStatTrigger = banner.querySelector('.github-stat--repos');
+                if (repoStatTrigger) {
+                    resumen.hidden = true;
+                    repoStatTrigger.classList.add('github-stat--trigger');
+                    repoStatTrigger.setAttribute('role', 'button');
+                    repoStatTrigger.setAttribute('tabindex', '0');
+                    repoStatTrigger.setAttribute('aria-expanded', 'false');
+                    repoStatTrigger.setAttribute('aria-controls', 'repo-summary');
+                    resumen.id = 'repo-summary';
+
+                    const toggleResumen = () => {
+                        filtroActivo = 'all';
+                        aplicarFiltroReposGlobal(filtroActivo);
+
+                        const isHidden = resumen.hidden;
+                        resumen.hidden = !isHidden;
+                        repoStatTrigger.setAttribute('aria-expanded', String(isHidden));
+                    };
+
+                    repoStatTrigger.addEventListener('click', toggleResumen);
+                    repoStatTrigger.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            toggleResumen();
+                        }
+                    });
+                }
+
+                banner.appendChild(resumen);
+
+                const chipsFiltro = Array.from(resumen.querySelectorAll('.projects-kpi--filter'));
+
+                const aplicarFiltroRepos = (filtro) => {
+                    const repoCards = Array.from(contenedor.querySelectorAll('.repo-card'));
+                    repoCards.forEach((card) => {
+                        const tipo = card.getAttribute('data-visibility');
+                        const mostrar = filtro === 'all' || tipo === filtro;
+                        card.hidden = !mostrar;
+                    });
+
+                    chipsFiltro.forEach((chip) => {
+                        const activo = chip.getAttribute('data-filter') === filtro;
+                        chip.classList.toggle('is-active', activo);
+                        chip.setAttribute('aria-pressed', String(activo));
+                    });
+                };
+
+                aplicarFiltroReposGlobal = aplicarFiltroRepos;
+
+                chipsFiltro.forEach((chip) => {
+                    const filtro = chip.getAttribute('data-filter') ?? 'all';
+                    chip.addEventListener('click', () => {
+                        filtroActivo = filtro;
+                        aplicarFiltroRepos(filtroActivo);
+                    });
+                    chip.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            filtroActivo = filtro;
+                            aplicarFiltroRepos(filtroActivo);
+                        }
+                    });
+                });
+            }
+        }
+
         repos.forEach((repo, index) => {
             const proyecto = document.createElement('article');
             proyecto.classList.add('repo-card');
-            if (index === 0) proyecto.classList.add('repo-card--featured');
 
             const langColor = colorLenguaje(repo.language);
             const esPrivado = repo.private;
             const totalStars = repo.stargazers_count ?? 0;
             const totalForks = repo.forks_count ?? 0;
+            proyecto.classList.add(esPrivado ? 'repo-card--private' : 'repo-card--public');
+            proyecto.setAttribute('data-visibility', esPrivado ? 'private' : 'public');
 
             proyecto.innerHTML = `
                 ${imagenRepo(repo)}
                 <div class="repo-card-body">
+                    <div class="repo-card-topline">
+                        <span class="repo-pill repo-pill--lang">
+                            <span class="lang-dot" style="background:${langColor}"></span>
+                            ${repo.language ?? 'Sin lenguaje definido'}
+                        </span>
+                        <span class="repo-pill repo-pill--time">Actualizado ${tiempoRelativo(repo.updated_at)}</span>
+                    </div>
+
                     <div class="repo-card-header">
                         <h4 class="repo-name">${repo.name}</h4>
                         <span class="repo-badge ${esPrivado ? 'badge-privado' : 'badge-publico'}">
@@ -327,28 +861,58 @@ async function cargarRepos() {
 
                     <div class="repo-commits">
                         <span class="repo-commit-dot"></span>
-                        Última actividad: <strong>${tiempoRelativo(repo.updated_at)}</strong>
+                        Estado de mantenimiento activo
                     </div>
 
                     <div class="repo-meta">
-                        ${repo.language ? `
-                        <span class="repo-lang">
-                            <span class="lang-dot" style="background:${langColor}"></span>
-                            ${repo.language}
-                        </span>` : ''}
                         <span class="repo-stars">⭐ ${totalStars}</span>
                         ${totalForks ? `<span class="repo-forks">🍴 ${totalForks}</span>` : ''}
                     </div>
 
                     <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
-                        Ver proyecto
+                        ${esPrivado ? 'Ver repositorio' : 'Explorar proyecto'}
                         <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.75.75 0 0 1-1.5 0V2.561l-3.97 3.97a.749.749 0 0 1-1.06-1.06l3.97-3.97H10.604a.75.75 0 0 1 0-1.5Z"/></svg>
                     </a>
                 </div>
             `;
 
             contenedor.appendChild(proyecto);
+
+            const previewImg = proyecto.querySelector('.repo-preview-img');
+            if (previewImg) {
+                previewImg.addEventListener('error', () => {
+                    const fallbackSrc = previewImg.getAttribute('data-fallback-src');
+                    if (!fallbackSrc) {
+                        return;
+                    }
+
+                    previewImg.src = fallbackSrc;
+                    previewImg.removeAttribute('data-fallback-src');
+                }, { once: true });
+            }
+
+            proyecto.classList.add('stagger-item');
+            proyecto.style.setProperty('--stagger-index', String(index % 6));
+
+            if ('IntersectionObserver' in window) {
+                requestAnimationFrame(() => {
+                    const revealRepoObserver = new IntersectionObserver((entries, currentObserver) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                currentObserver.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.25 });
+
+                    revealRepoObserver.observe(proyecto);
+                });
+            } else {
+                proyecto.classList.add('is-visible');
+            }
         });
+
+        aplicarFiltroReposGlobal(filtroActivo);
 
         if (origen === 'publico') {
             const mensaje = document.createElement('p');
