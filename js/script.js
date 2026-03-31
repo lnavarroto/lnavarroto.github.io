@@ -5,6 +5,11 @@ const pageSections = document.querySelectorAll('section[id]');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const THEME_KEY = 'ln-theme';
 let mobileNavIndicatorLabel = null;
+let scrollProgress = null;
+let scrollProgressValue = null;
+let scrollProgressTarget = 0;
+let scrollProgressCurrent = 0;
+let scrollProgressRaf = null;
 
 function closeMobileMenu() {
     if (!navbar || !navToggle) {
@@ -382,9 +387,45 @@ function updateActiveLink() {
     });
 }
 
+function animateScrollProgress() {
+    if (!scrollProgress || !scrollProgressValue) {
+        scrollProgressRaf = null;
+        return;
+    }
+
+    scrollProgressCurrent += (scrollProgressTarget - scrollProgressCurrent) * 0.2;
+
+    if (Math.abs(scrollProgressTarget - scrollProgressCurrent) < 0.12) {
+        scrollProgressCurrent = scrollProgressTarget;
+    }
+
+    const rounded = Math.round(scrollProgressCurrent);
+    scrollProgress.style.setProperty('--progress', `${rounded}%`);
+    scrollProgressValue.textContent = `${rounded}%`;
+    scrollProgress.classList.toggle('is-complete', rounded >= 100);
+
+    if (scrollProgressCurrent !== scrollProgressTarget) {
+        scrollProgressRaf = requestAnimationFrame(animateScrollProgress);
+    } else {
+        scrollProgressRaf = null;
+    }
+}
+
+function updateScrollProgressTarget() {
+    const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const currentScroll = window.scrollY || window.pageYOffset;
+    const rawProgress = maxScrollable > 0 ? (currentScroll / maxScrollable) * 100 : 100;
+    scrollProgressTarget = Math.max(0, Math.min(100, rawProgress));
+
+    if (!scrollProgressRaf) {
+        scrollProgressRaf = requestAnimationFrame(animateScrollProgress);
+    }
+}
+
 window.addEventListener('scroll', () => {
     updateNavbarState();
     updateActiveLink();
+    updateScrollProgressTarget();
 });
 
 initTheme();
@@ -423,6 +464,44 @@ function initMobileNavIndicator() {
     window.addEventListener('resize', syncIndicatorVisibility);
 }
 
+function initScrollProgressIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'scroll-progress';
+    indicator.setAttribute('role', 'button');
+    indicator.setAttribute('tabindex', '0');
+    indicator.setAttribute('aria-label', 'Volver arriba');
+    indicator.title = 'Volver arriba';
+
+    const innerRing = document.createElement('div');
+    innerRing.className = 'scroll-progress__ring';
+
+    const value = document.createElement('span');
+    value.className = 'scroll-progress__value';
+    value.textContent = '0%';
+
+    innerRing.appendChild(value);
+    indicator.appendChild(innerRing);
+    document.body.appendChild(indicator);
+
+    scrollProgress = indicator;
+    scrollProgressValue = value;
+    updateScrollProgressTarget();
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    indicator.addEventListener('click', scrollToTop);
+    indicator.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            scrollToTop();
+        }
+    });
+
+    window.addEventListener('resize', updateScrollProgressTarget);
+}
+
 function observeStaggerItems() {
     if (!('IntersectionObserver' in window)) {
         staggerTargets.forEach((item) => item.classList.add('is-visible'));
@@ -446,6 +525,7 @@ function observeStaggerItems() {
 }
 
 initMobileNavIndicator();
+initScrollProgressIndicator();
 observeStaggerItems();
 
 if ('IntersectionObserver' in window) {
