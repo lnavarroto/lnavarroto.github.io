@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "id": 1191951592,
+    "name": "lnavarroto.github.io",
+    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
+    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
+    "language": "CSS",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-25T18:41:02Z",
+    "updated_at": "2026-04-04T04:41:22Z",
+    "fork": false
+  },
+  {
+    "id": 1142062414,
+    "name": "ticket_modulo_civil",
+    "html_url": "https://github.com/lnavarroto/ticket_modulo_civil",
+    "description": null,
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-01-25T22:18:19Z",
+    "updated_at": "2026-04-03T18:48:03Z",
+    "fork": false
+  },
+  {
+    "id": 1184710609,
+    "name": "ScriptForge",
+    "html_url": "https://github.com/lnavarroto/ScriptForge",
+    "description": "**ScriptForge** es mi laboratorio personal de código donde desarrollo, organizo y almaceno scripts, herramientas y automatizaciones creadas para resolver problemas reales y optimizar procesos. Un espacio en constante evolución donde cada script se convierte en una herramienta útil dentro de mi arsenal de desarrollo. ⚙️💻",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-17T21:24:16Z",
+    "updated_at": "2026-04-03T18:45:24Z",
+    "fork": false
+  },
+  {
+    "id": 1178935070,
+    "name": "registro-lectura-expedientes",
+    "html_url": "https://github.com/lnavarroto/registro-lectura-expedientes",
+    "description": null,
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-11T14:16:20Z",
+    "updated_at": "2026-04-03T18:42:00Z",
+    "fork": false
+  },
+  {
+    "id": 1193886415,
+    "name": "control-expedientes",
+    "html_url": "https://github.com/lnavarroto/control-expedientes",
+    "description": "Sistema de control de expedientes en archivo para el modulo civil de sullana",
+    "language": null,
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-27T17:24:32Z",
+    "updated_at": "2026-03-27T17:24:36Z",
+    "fork": false
+  }
+]
