@@ -1,0 +1,43 @@
+{
+  "control-expedientes": {
+    "title": "Sistema de Control de Expedientes",
+    "summary": "Aplicacion web interna que digitaliza el ciclo completo de vida de expedientes en el Modulo Civil. Reemplaza el seguimiento manual en papel con un flujo estructurado que garantiza trazabilidad, auditoria y busqueda instantanea de cualquier caso por numero, fecha o estado.",
+    "technologies": ["JavaScript", "Node.js", "SQL", "Express"],
+    "status": "active",
+    "type": "Sistema Interno",
+    "impact": "Elimina la perdida de expedientes y reduce el tiempo de localizacion de minutos a segundos."
+  },
+  "registro-lectura-expedientes": {
+    "title": "Registro de Lectura de Expedientes",
+    "summary": "Sistema operativo para capturar y auditar la lectura de expedientes por el personal del area. Registra accesos en tiempo real, permite consultar historiales completos por expediente o usuario y exporta reportes de actividad sin depender de hojas de calculo.",
+    "technologies": ["JavaScript", "Node.js", "SQL"],
+    "status": "active",
+    "type": "Sistema Interno",
+    "impact": "Proceso de registro 100% digitalizado. Consultas e historial de acceso disponibles en menos de 2 segundos."
+  },
+  "ScriptForge": {
+    "title": "ScriptForge — Kit de Automatizacion",
+    "summary": "Coleccion de scripts y herramientas CLI para acelerar tareas repetitivas de desarrollo: scaffolding de proyectos, migraciones, seeds, limpieza de builds y utilidades de mantenimiento. Construido para uso personal pero estructurado como libreria reutilizable.",
+    "technologies": ["Node.js", "JavaScript", "Shell"],
+    "status": "active",
+    "type": "Herramienta CLI",
+    "impact": "Reduce de horas a segundos el setup inicial de proyectos y los flujos de mantenimiento recurrentes."
+  },
+  "ticket_modulo_civil": {
+    "title": "Modulo de Tickets — Area Civil",
+    "summary": "Aplicacion web para registrar, asignar y resolver solicitudes internas del departamento civil. Reemplaza la gestion informal por mensajes de texto con un flujo estructurado: creacion, asignacion, seguimiento y cierre documentado de cada incidencia.",
+    "technologies": ["JavaScript", "Node.js", "SQL"],
+    "status": "development",
+    "type": "Sistema Interno",
+    "impact": "En construccion activa — elimina incidencias sin rastreo y centraliza toda la comunicacion operativa del area."
+  },
+  "lnavarroto.github.io": {
+    "title": "Portafolio Profesional",
+    "summary": "Sitio web personal construido desde cero con HTML, CSS y JavaScript vanilla. Incluye modo claro y oscuro, animaciones fluidas, integracion en vivo con la API de GitHub y una arquitectura limpia que refleja el mismo nivel de cuidado aplicado a cada proyecto listado.",
+    "technologies": ["HTML", "CSS", "JavaScript"],
+    "status": "active",
+    "type": "Sitio Web",
+    "impact": "Presencia profesional online: proyectos, stack, logros y contacto en una experiencia visual diferenciada.",
+    "demoUrl": "https://lnavarroto.github.io"
+  }
+}

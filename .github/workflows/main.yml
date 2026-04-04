@@ -2,6 +2,8 @@ name: Sync GitHub Repositories
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: write
@@ -13,16 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch repos
-        run: |
-          curl -H "Authorization: Bearer ${{ secrets.PRIVATE_REPOS_TOKEN }}" \
-          https://api.github.com/user/repos?per_page=100 \
-          > repos.json
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Commit repos.json
+      - name: Export repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_REPOS_TOKEN }}
+          GITHUB_USERNAME: lnavarroto
+        run: node scripts/export-repos.mjs
+
+      - name: Commit data/repos.json
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add repos.json
-          git commit -m "update repos list" || echo "no changes"
+          git add data/repos.json
+          git commit -m "sync repos data" || echo "no changes"
           git push

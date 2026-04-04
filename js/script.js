@@ -571,8 +571,219 @@ const LANG_COLORS = {
     Markdown: '#083fa1',
 };
 
+const GITHUB_USERNAME = 'lnavarroto';
+const PROJECT_OVERRIDES_URL = '/data/project-overrides.json';
+
+const PROJECT_STATUS = {
+    active: {
+        label: 'Activo',
+        icon: '🟢',
+        className: 'repo-status--active',
+    },
+    development: {
+        label: 'En desarrollo',
+        icon: '🟡',
+        className: 'repo-status--development',
+    },
+    paused: {
+        label: 'Pausado',
+        icon: '🔴',
+        className: 'repo-status--paused',
+    },
+};
+
 function colorLenguaje(lang) {
     return LANG_COLORS[lang] ?? '#8b949e';
+}
+
+function escaparHtml(valor) {
+    return String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function limpiarMarkdown(texto) {
+    return String(texto ?? '')
+        .replace(/[*_`#~>|\[\]\(\)]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function capitalizarPalabra(texto) {
+    if (!texto) {
+        return '';
+    }
+
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
+function humanizarNombreRepo(nombre) {
+    const base = String(nombre ?? '')
+        .replace(/\.github\.io$/i, ' portafolio web')
+        .replace(/[-_]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    if (!base) {
+        return 'Proyecto';
+    }
+
+    return base
+        .split(' ')
+        .map((palabra) => {
+            if (palabra === palabra.toUpperCase() && palabra.length <= 4) {
+                return palabra;
+            }
+
+            return capitalizarPalabra(palabra.toLowerCase());
+        })
+        .join(' ');
+}
+
+function derivarDescripcionProyecto(repo, tituloVisible) {
+    const descripcionBase = limpiarMarkdown(repo.description);
+    if (descripcionBase) {
+        return descripcionBase;
+    }
+
+    if (repo.private) {
+        return `Proyecto privado orientado a ${tituloVisible.toLowerCase()} con una implementacion ordenada y mantenible.`;
+    }
+
+    return `Proyecto enfocado en ${tituloVisible.toLowerCase()} con una solucion clara, mantenible y lista para evolucionar.`;
+}
+
+function formatearTecnologia(valor) {
+    const texto = String(valor ?? '').trim();
+    if (!texto) {
+        return '';
+    }
+
+    const mapa = {
+        javascript: 'JavaScript',
+        typescript: 'TypeScript',
+        node: 'Node.js',
+        nodejs: 'Node.js',
+        react: 'React',
+        firebase: 'Firebase',
+        mysql: 'MySQL',
+        sqlserver: 'SQL Server',
+        sql: 'SQL',
+        html: 'HTML',
+        css: 'CSS',
+        automation: 'Automatizacion',
+        automatizacion: 'Automatizacion',
+        api: 'API',
+    };
+
+    const clave = texto.toLowerCase().replace(/[\s_-]+/g, '');
+    if (mapa[clave]) {
+        return mapa[clave];
+    }
+
+    return texto
+        .split(/[-_\s]+/)
+        .filter(Boolean)
+        .map((parte) => capitalizarPalabra(parte.toLowerCase()))
+        .join(' ');
+}
+
+function obtenerTecnologiasProyecto(repo, override) {
+    const tecnologias = [];
+
+    const agregar = (valor) => {
+        const tecnologia = formatearTecnologia(valor);
+        if (!tecnologia || tecnologias.includes(tecnologia)) {
+            return;
+        }
+
+        tecnologias.push(tecnologia);
+    };
+
+    if (Array.isArray(override?.technologies)) {
+        override.technologies.forEach(agregar);
+    }
+
+    if (Array.isArray(repo.topics)) {
+        repo.topics.forEach(agregar);
+    }
+
+    agregar(repo.language);
+
+    return tecnologias.slice(0, 4);
+}
+
+function obtenerEstadoProyecto(repo, override) {
+    if (override?.status && PROJECT_STATUS[override.status]) {
+        return PROJECT_STATUS[override.status];
+    }
+
+    const diasDesdeActualizacion = Math.floor((Date.now() - new Date(repo.updated_at ?? 0).getTime()) / 86400000);
+
+    if (Number.isFinite(diasDesdeActualizacion) && diasDesdeActualizacion <= 45) {
+        return PROJECT_STATUS.active;
+    }
+
+    if (Number.isFinite(diasDesdeActualizacion) && diasDesdeActualizacion <= 160) {
+        return PROJECT_STATUS.development;
+    }
+
+    return PROJECT_STATUS.paused;
+}
+
+function obtenerTipoProyecto(repo, override) {
+    if (override?.type) {
+        return override.type;
+    }
+
+    if (/\.github\.io$/i.test(repo.name ?? '')) {
+        return 'Web App';
+    }
+
+    return repo.private ? 'Proyecto interno' : 'Proyecto de software';
+}
+
+async function obtenerProjectOverrides() {
+    try {
+        const response = await fetch(`${PROJECT_OVERRIDES_URL}?v=${Date.now()}`, {
+            cache: 'no-store',
+        });
+
+        if (!response.ok) {
+            return {};
+        }
+
+        const data = await response.json();
+        return data && typeof data === 'object' ? data : {};
+    } catch (_) {
+        return {};
+    }
+}
+
+function construirProyectoPresentacion(repo, overrides) {
+    const override = overrides?.[repo.name] ?? {};
+    const titulo = override.title?.trim() || humanizarNombreRepo(repo.name);
+    const descripcion = override.summary?.trim() || derivarDescripcionProyecto(repo, titulo);
+    const tecnologias = obtenerTecnologiasProyecto(repo, override);
+    const estado = obtenerEstadoProyecto(repo, override);
+    const tipo = obtenerTipoProyecto(repo, override);
+    const impacto = override.impact?.trim() || '';
+    const demoUrl = override.demoUrl?.trim() || repo.homepage?.trim() || '';
+
+    return {
+        titulo,
+        descripcion,
+        tecnologias,
+        estado,
+        tipo,
+        impacto,
+        demoUrl,
+        codeUrl: repo.html_url,
+        esPrivado: Boolean(repo.private),
+    };
 }
 
 function tiempoRelativo(fechaISO) {
@@ -728,7 +939,10 @@ async function cargarEstadisticasGitHub(wrapper) {
 }
 
 async function obtenerReposEstaticos(url) {
-    const response = await fetch(url);
+    const separador = url.includes('?') ? '&' : '?';
+    const response = await fetch(`${url}${separador}v=${Date.now()}`, {
+        cache: 'no-store',
+    });
 
     if (!response.ok) {
         throw new Error(`Error al consultar ${url}`);
@@ -750,7 +964,9 @@ async function obtenerReposPaginados(url) {
     while (true) {
         const separador = url.includes('?') ? '&' : '?';
         const endpointPaginado = `${url}${separador}per_page=100&page=${pagina}`;
-        const response = await fetch(endpointPaginado);
+        const response = await fetch(endpointPaginado, {
+            cache: 'no-store',
+        });
 
         if (!response.ok) {
             throw new Error(`Error al consultar ${url}`);
@@ -774,16 +990,101 @@ async function obtenerReposPaginados(url) {
     return todos;
 }
 
-async function obtenerReposGitHub() {
-    try {
-        // Primero intenta el JSON generado por GitHub Actions (incluye privados)
-        const sincronizados = await obtenerReposEstaticos('/repos.json');
-        return { repos: sincronizados, origen: 'sincronizado' };
-    } catch (errorSincronizado) {
-        // Fallback: API publica de GitHub (solo publicos)
-        const publicos = await obtenerReposPaginados('https://api.github.com/users/lnavarroto/repos?sort=updated');
-        return { repos: publicos, origen: 'publico' };
+function normalizarRepo(repo) {
+    if (!repo || !repo.name || !repo.html_url) {
+        return null;
     }
+
+    return {
+        id: repo.id,
+        name: repo.name,
+        html_url: repo.html_url,
+        description: repo.description ?? null,
+        language: repo.language ?? null,
+        stargazers_count: repo.stargazers_count ?? 0,
+        forks_count: repo.forks_count ?? 0,
+        homepage: repo.homepage ?? null,
+        topics: Array.isArray(repo.topics) ? repo.topics : [],
+        private: Boolean(repo.private),
+        created_at: repo.created_at ?? null,
+        updated_at: repo.updated_at ?? null,
+        fork: Boolean(repo.fork),
+    };
+}
+
+function combinarReposActualizados(...listas) {
+    const mapaRepos = new Map();
+
+    listas.flat().forEach((repo) => {
+        const normalizado = normalizarRepo(repo);
+        if (!normalizado) {
+            return;
+        }
+
+        const clave = normalizado.name.toLowerCase();
+        const anterior = mapaRepos.get(clave);
+
+        if (!anterior) {
+            mapaRepos.set(clave, normalizado);
+            return;
+        }
+
+        const fechaAnterior = new Date(anterior.updated_at ?? 0).getTime();
+        const fechaNueva = new Date(normalizado.updated_at ?? 0).getTime();
+
+        if (fechaNueva >= fechaAnterior) {
+            mapaRepos.set(clave, normalizado);
+        }
+    });
+
+    return Array.from(mapaRepos.values());
+}
+
+async function obtenerReposSincronizados() {
+    const resultados = await Promise.allSettled([
+        obtenerReposEstaticos('/data/repos.json'),
+        obtenerReposEstaticos('/repos.json'),
+    ]);
+
+    const [desdeData, desdeRoot] = resultados.map((resultado) => {
+        if (resultado.status !== 'fulfilled' || !Array.isArray(resultado.value)) {
+            return [];
+        }
+
+        return resultado.value;
+    });
+
+    return combinarReposActualizados(desdeData, desdeRoot);
+}
+
+async function obtenerReposPublicosEnVivo() {
+    const endpoint = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&direction=desc`;
+    return await obtenerReposPaginados(endpoint);
+}
+
+async function obtenerReposGitHub() {
+    let sincronizados = [];
+    let publicos = [];
+
+    try {
+        sincronizados = await obtenerReposSincronizados();
+    } catch (_) {
+        sincronizados = [];
+    }
+
+    try {
+        publicos = await obtenerReposPublicosEnVivo();
+    } catch (_) {
+        publicos = [];
+    }
+
+    const reposCombinados = combinarReposActualizados(sincronizados, publicos);
+
+    if (reposCombinados.length) {
+        return { repos: reposCombinados, origen: sincronizados.length ? 'combinado' : 'publico' };
+    }
+
+    throw new Error('No se pudieron obtener repositorios desde ninguna fuente.');
 }
 
 async function cargarRepos() {
@@ -795,15 +1096,17 @@ async function cargarRepos() {
 
     const wrapper = contenedor.closest('.github-projects-block');
     const bannerPromise = wrapper ? cargarEstadisticasGitHub(wrapper) : Promise.resolve(null);
+    const overridesPromise = obtenerProjectOverrides();
     let filtroActivo = 'all';
     let aplicarFiltroReposGlobal = () => {};
 
     contenedor.innerHTML = '<p class="repos-status">Cargando repositorios...</p>';
 
     try {
-        const [{ repos, origen }, banner] = await Promise.all([
+        const [{ repos, origen }, banner, projectOverrides] = await Promise.all([
             obtenerReposGitHub(),
             bannerPromise,
+            overridesPromise,
         ]);
 
         repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
@@ -912,47 +1215,54 @@ async function cargarRepos() {
             const proyecto = document.createElement('article');
             proyecto.classList.add('repo-card');
 
-            const langColor = colorLenguaje(repo.language);
             const esPrivado = repo.private;
-            const totalStars = repo.stargazers_count ?? 0;
-            const totalForks = repo.forks_count ?? 0;
+            const presentacion = construirProyectoPresentacion(repo, projectOverrides);
             proyecto.classList.add(esPrivado ? 'repo-card--private' : 'repo-card--public');
             proyecto.setAttribute('data-visibility', esPrivado ? 'private' : 'public');
+
+            const tecnologiasHtml = presentacion.tecnologias.length
+                ? presentacion.tecnologias.map((tech) => `<span class="repo-tech-chip">${escaparHtml(tech)}</span>`).join('')
+                : '<span class="repo-tech-chip">Stack por definir</span>';
+
+            const impactoHtml = presentacion.impacto
+                ? `<p class="repo-impact"><span>Resultado</span>${escaparHtml(presentacion.impacto)}</p>`
+                : '';
+
+            const demoHtml = presentacion.demoUrl
+                ? `<a class="repo-link repo-link--demo" href="${escaparHtml(presentacion.demoUrl)}" target="_blank" rel="noopener noreferrer">🔗 Ver Demo</a>`
+                : '';
+
+            const codeLabel = esPrivado ? '💻 Repositorio' : '💻 Ver Codigo';
 
             proyecto.innerHTML = `
                 ${imagenRepo(repo)}
                 <div class="repo-card-body">
                     <div class="repo-card-topline">
-                        <span class="repo-pill repo-pill--lang">
-                            <span class="lang-dot" style="background:${langColor}"></span>
-                            ${repo.language ?? 'Sin lenguaje definido'}
-                        </span>
-                        <span class="repo-pill repo-pill--time">Actualizado ${tiempoRelativo(repo.updated_at)}</span>
+                        <span class="repo-pill repo-pill--type">${escaparHtml(presentacion.tipo)}</span>
+                        <span class="repo-pill repo-pill--visibility">${esPrivado ? 'Privado' : 'Publico'}</span>
                     </div>
 
                     <div class="repo-card-header">
-                        <h4 class="repo-name">${repo.name}</h4>
-                        <span class="repo-badge ${esPrivado ? 'badge-privado' : 'badge-publico'}">
-                            ${esPrivado ? '🔒 Privado' : '🌐 Público'}
+                        <h4 class="repo-name">${escaparHtml(presentacion.titulo)}</h4>
+                        <span class="repo-badge repo-status-badge ${presentacion.estado.className}">
+                            ${presentacion.estado.icon} ${presentacion.estado.label}
                         </span>
                     </div>
 
-                    <p class="repo-desc">${repo.description ?? 'Proyecto en desarrollo'}</p>
+                    <p class="repo-desc">${escaparHtml(presentacion.descripcion)}</p>
 
-                    <div class="repo-commits">
-                        <span class="repo-commit-dot"></span>
-                        Estado de mantenimiento activo
+                    <div class="repo-tech-row" aria-label="Tecnologias del proyecto">
+                        ${tecnologiasHtml}
                     </div>
 
-                    <div class="repo-meta">
-                        <span class="repo-stars">⭐ ${totalStars}</span>
-                        ${totalForks ? `<span class="repo-forks">🍴 ${totalForks}</span>` : ''}
-                    </div>
+                    ${impactoHtml}
 
-                    <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
-                        ${esPrivado ? 'Ver repositorio' : 'Explorar proyecto'}
-                        <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.75.75 0 0 1-1.5 0V2.561l-3.97 3.97a.749.749 0 0 1-1.06-1.06l3.97-3.97H10.604a.75.75 0 0 1 0-1.5Z"/></svg>
-                    </a>
+                    <div class="repo-actions">
+                        ${demoHtml}
+                        <a class="repo-link repo-link--code" href="${escaparHtml(presentacion.codeUrl)}" target="_blank" rel="noopener noreferrer">
+                            ${codeLabel}
+                        </a>
+                    </div>
                 </div>
             `;
 
