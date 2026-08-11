@@ -1,20 +1,5 @@
 [
   {
-    "id": 1191951592,
-    "name": "lnavarroto.github.io",
-    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
-    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
-    "language": "CSS",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": false,
-    "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-08-11T06:41:27Z",
-    "fork": false
-  },
-  {
     "id": 1330126740,
     "name": "Delimitaciones",
     "html_url": "https://github.com/lnavarroto/Delimitaciones",
@@ -26,7 +11,22 @@
     "topics": [],
     "private": true,
     "created_at": "2026-08-10T18:21:10Z",
-    "updated_at": "2026-08-10T21:22:56Z",
+    "updated_at": "2026-08-11T18:03:28Z",
+    "fork": false
+  },
+  {
+    "id": 1191951592,
+    "name": "lnavarroto.github.io",
+    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
+    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
+    "language": "CSS",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-25T18:41:02Z",
+    "updated_at": "2026-08-11T12:34:53Z",
     "fork": false
   },
   {
