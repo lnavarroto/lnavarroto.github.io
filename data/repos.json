@@ -1,5 +1,20 @@
 [
   {
+    "id": 1191951592,
+    "name": "lnavarroto.github.io",
+    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
+    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
+    "language": "CSS",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-25T18:41:02Z",
+    "updated_at": "2026-08-20T00:27:11Z",
+    "fork": false
+  },
+  {
     "id": 1339982206,
     "name": "control-escritos",
     "html_url": "https://github.com/lnavarroto/control-escritos",
@@ -27,21 +42,6 @@
     "private": true,
     "created_at": "2026-08-19T19:21:42Z",
     "updated_at": "2026-08-19T19:23:29Z",
-    "fork": false
-  },
-  {
-    "id": 1191951592,
-    "name": "lnavarroto.github.io",
-    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
-    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
-    "language": "CSS",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": false,
-    "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-08-19T18:18:10Z",
     "fork": false
   },
   {
