@@ -1,5 +1,50 @@
 [
   {
+    "id": 1343392416,
+    "name": "catalogo-virtual",
+    "html_url": "https://github.com/lnavarroto/catalogo-virtual",
+    "description": "Sistema web de catálogo digital para pequeños emprendedores con gestión de productos e integración con WhatsApp.",
+    "language": "CSS",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-08-23T05:15:47Z",
+    "updated_at": "2026-08-23T05:17:24Z",
+    "fork": false
+  },
+  {
+    "id": 1178935070,
+    "name": "registro-lectura-expedientes",
+    "html_url": "https://github.com/lnavarroto/registro-lectura-expedientes",
+    "description": null,
+    "language": "JavaScript",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-03-11T14:16:20Z",
+    "updated_at": "2026-08-23T04:43:13Z",
+    "fork": false
+  },
+  {
+    "id": 1193886415,
+    "name": "control-expedientes",
+    "html_url": "https://github.com/lnavarroto/control-expedientes",
+    "description": "Sistema de control de expedientes en archivo para el modulo civil de sullana",
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-03-27T17:24:32Z",
+    "updated_at": "2026-08-23T04:42:12Z",
+    "fork": false
+  },
+  {
     "id": 1191951592,
     "name": "lnavarroto.github.io",
     "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
@@ -11,7 +56,7 @@
     "topics": [],
     "private": false,
     "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-08-22T18:10:11Z",
+    "updated_at": "2026-08-23T00:29:50Z",
     "fork": false
   },
   {
@@ -45,21 +90,6 @@
     "fork": false
   },
   {
-    "id": 1193886415,
-    "name": "control-expedientes",
-    "html_url": "https://github.com/lnavarroto/control-expedientes",
-    "description": "Sistema de control de expedientes en archivo para el modulo civil de sullana",
-    "language": "JavaScript",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": false,
-    "created_at": "2026-03-27T17:24:32Z",
-    "updated_at": "2026-08-19T17:45:04Z",
-    "fork": false
-  },
-  {
     "id": 1330126740,
     "name": "Delimitaciones",
     "html_url": "https://github.com/lnavarroto/Delimitaciones",
@@ -87,21 +117,6 @@
     "private": true,
     "created_at": "2026-07-06T05:04:43Z",
     "updated_at": "2026-07-06T15:00:40Z",
-    "fork": false
-  },
-  {
-    "id": 1178935070,
-    "name": "registro-lectura-expedientes",
-    "html_url": "https://github.com/lnavarroto/registro-lectura-expedientes",
-    "description": null,
-    "language": "JavaScript",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": false,
-    "created_at": "2026-03-11T14:16:20Z",
-    "updated_at": "2026-06-08T19:23:23Z",
     "fork": false
   },
   {
