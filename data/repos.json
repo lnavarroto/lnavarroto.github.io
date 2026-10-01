@@ -1,5 +1,20 @@
 [
   {
+    "id": 1343392416,
+    "name": "catalogo-virtual",
+    "html_url": "https://github.com/lnavarroto/catalogo-virtual",
+    "description": "Sistema web de catálogo digital para pequeños emprendedores con gestión de productos e integración con WhatsApp.",
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-08-23T05:15:47Z",
+    "updated_at": "2026-10-01T17:23:07Z",
+    "fork": false
+  },
+  {
     "id": 1191951592,
     "name": "lnavarroto.github.io",
     "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
@@ -11,7 +26,7 @@
     "topics": [],
     "private": false,
     "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-10-01T02:38:08Z",
+    "updated_at": "2026-10-01T11:53:49Z",
     "fork": false
   },
   {
@@ -42,21 +57,6 @@
     "private": true,
     "created_at": "2026-03-11T14:16:20Z",
     "updated_at": "2026-08-30T18:10:52Z",
-    "fork": false
-  },
-  {
-    "id": 1343392416,
-    "name": "catalogo-virtual",
-    "html_url": "https://github.com/lnavarroto/catalogo-virtual",
-    "description": "Sistema web de catálogo digital para pequeños emprendedores con gestión de productos e integración con WhatsApp.",
-    "language": "CSS",
-    "stargazers_count": 0,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": true,
-    "created_at": "2026-08-23T05:15:47Z",
-    "updated_at": "2026-08-23T05:17:24Z",
     "fork": false
   },
   {
