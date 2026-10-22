@@ -1,5 +1,20 @@
 [
   {
+    "id": 1429278808,
+    "name": "ExpoLibros",
+    "html_url": "https://github.com/lnavarroto/ExpoLibros",
+    "description": null,
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": true,
+    "created_at": "2026-10-22T05:21:20Z",
+    "updated_at": "2026-10-22T05:23:33Z",
+    "fork": false
+  },
+  {
     "id": 1191951592,
     "name": "lnavarroto.github.io",
     "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
@@ -11,7 +26,7 @@
     "topics": [],
     "private": false,
     "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-10-21T20:56:32Z",
+    "updated_at": "2026-10-22T02:04:04Z",
     "fork": false
   },
   {
