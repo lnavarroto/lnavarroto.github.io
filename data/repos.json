@@ -1,5 +1,20 @@
 [
   {
+    "id": 1191951592,
+    "name": "lnavarroto.github.io",
+    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
+    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
+    "language": "CSS",
+    "stargazers_count": 1,
+    "forks_count": 0,
+    "homepage": null,
+    "topics": [],
+    "private": false,
+    "created_at": "2026-03-25T18:41:02Z",
+    "updated_at": "2026-10-27T02:33:53Z",
+    "fork": false
+  },
+  {
     "id": 1429278808,
     "name": "ExpoLibros",
     "html_url": "https://github.com/lnavarroto/ExpoLibros",
@@ -12,21 +27,6 @@
     "private": true,
     "created_at": "2026-10-22T05:21:20Z",
     "updated_at": "2026-10-27T00:32:08Z",
-    "fork": false
-  },
-  {
-    "id": 1191951592,
-    "name": "lnavarroto.github.io",
-    "html_url": "https://github.com/lnavarroto/lnavarroto.github.io",
-    "description": "Portafolio de desarrollador - proyectos, habilidades y contacto",
-    "language": "CSS",
-    "stargazers_count": 1,
-    "forks_count": 0,
-    "homepage": null,
-    "topics": [],
-    "private": false,
-    "created_at": "2026-03-25T18:41:02Z",
-    "updated_at": "2026-10-26T21:57:48Z",
     "fork": false
   },
   {
